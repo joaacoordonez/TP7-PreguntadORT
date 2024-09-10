@@ -49,9 +49,19 @@ public static class BD
         List<Respuesta> ListaRespuestas = new List<Respuesta>();
         using (SqlConnection db = new SqlConnection(_connectionString))
         {
-            string sql = "SELECT * FROM Respuestas WHERE IdPregunta = @IdPregunta";
+            string sql = "SELECT * FROM Respuestas WHERE IdPregunta = @idPregunta";
             ListaRespuestas = db.Query<Respuesta>(sql, new { IdPregunta = idPregunta }).ToList();
         }  
         return ListaRespuestas;
+    }
+    public static bool esCorrecta(int idRespuesta)
+    {
+        bool esCorrecta = false;
+        using(SqlConnection db = new SqlConnection(_connectionString))
+        {
+            string sql = "SELECT Correcta FROM Respuestas WHERE IdRespuesta = @idRespuesta";
+            esCorrecta = db.QueryFirstOrDefault<bool>(sql, new { IdRespuesta = idRespuesta });
+        }
+        return esCorrecta;
     }
 }

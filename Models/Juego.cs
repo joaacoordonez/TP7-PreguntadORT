@@ -20,8 +20,8 @@ public static class Juego
         CantidadPreguntasCorrectas = 0;
         ContadorNroPreguntaActual = 0;
         PreguntaActual = null;
-        ListaPreguntas = null;
-        ListaRespuestas = null;
+        ListaPreguntas = new List<Pregunta>();
+        ListaRespuestas = new List<Respuesta>();
     }
     public static List<Categoria> ObtenerCategorias()
     {
@@ -31,10 +31,39 @@ public static class Juego
     {
         return BD.ObtenerDificultades();
     }
-    public static void CargarPartida(string Username, int dificultad, int categoria)
+    public static void CargarPartida(string username, int dificultad, int categoria)
     {
         InicializarJuego();
-        username = Username;
+        Juego.username = username;
         List<Pregunta> ListaPreguntas = BD.ObtenerPreguntas(dificultad, categoria);
+    }
+    public static Pregunta ObtenerProximaPregunta()
+    {
+        if (ContadorNroPreguntaActual < ListaPreguntas.Count)
+        {
+            PreguntaActual = ListaPreguntas[ContadorNroPreguntaActual];
+            return PreguntaActual;
+        }
+        return null;
+    }
+    public static List<Respuesta> ObtenerProximasRespuestas(int idPregunta)
+    {
+        return BD.ObtenerRespuestas(idPregunta);
+    }
+    public static bool VerificarRespuesta(int idRespuesta)
+    {
+        bool esCorrecta = BD.esCorrecta(idRespuesta);
+        if (esCorrecta == true)
+        {
+            PuntajeActual += 10;
+            CantidadPreguntasCorrectas++;
+            esCorrecta = true;
+        }
+        ContadorNroPreguntaActual++;
+        if (ContadorNroPreguntaActual < ListaPreguntas.Count)
+        {
+            PreguntaActual = ListaPreguntas[ContadorNroPreguntaActual];
+        }
+        return esCorrecta;
     }
 } 
