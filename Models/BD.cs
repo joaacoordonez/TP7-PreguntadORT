@@ -5,7 +5,7 @@ namespace TP7_PreguntadORT.Models;
 
 public static class BD 
 {
-    private static string _connectionString = "@Server=localhost;DataBase=PreguntadORT;Trusted_Connection=True;";
+    private static string _connectionString = @"server=localhost;DataBase=PreguntadORT;Trusted_Connection=True;";
     public static List<Categoria> ObtenerCategorias()
     {
         List<Categoria> ListaCategorias = new List<Categoria>();
@@ -34,13 +34,13 @@ public static class BD
             string sql = "SELECT * FROM Preguntas WHERE 1=1";
             if (dificultad != -1)
             {
-                sql += " AND Dificultad = @Dificultad";
+                sql += " AND IdDificultad = @Dificultad";
             }
             if (categoria != -1)
             {
-                sql += " AND Categoria = @Categoria";
+                sql += " AND IdCategoria = @Categoria";
             }
-            ListaPreguntas = db.Query<Pregunta>(sql, new { Dificultad = dificultad, Categoria = categoria }).ToList();
+            ListaPreguntas = db.Query<Pregunta>(sql, new { IdDificultad = dificultad, IdCategoria = categoria }).ToList();
         }
         return ListaPreguntas;
     }

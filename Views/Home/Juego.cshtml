@@ -1,0 +1,37 @@
+@{
+    ViewData["Title"] = "Juego";
+}
+
+<h2>Juego de Preguntas</h2>
+
+<div>
+    <p><strong>Usuario:</strong> @ViewBag.Username</p>
+    <p><strong>Puntaje Actual:</strong> @ViewBag.PuntajeActual</p>
+</div>
+
+<div>
+    <h3>Pregunta @ViewBag.Pregunta: @Model.Contenido</h3>
+    @if (!string.IsNullOrEmpty(Model.Foto))
+    {
+        <img src="@Model.ImagenUrl" alt="Imagen de la pregunta" style="max-width: 100%; height: auto;" />
+    }
+</div>
+
+<form asp-action="VerificarRespuesta" method="post">
+    <input type="hidden" name="idPregunta" value="@Model.Id" />
+
+    @foreach (TP7_PreguntadORT.Models.Respuesta respuesta in ViewBag.Respuestas)
+    {
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="idRespuesta" id="respuesta_@respuesta.IdRespuesta" value="@respuesta.IdRespuesta" required>
+            <label class="form-check-label" for="respuesta_@respuesta.IdRespuesta">
+                @respuesta.Contenido
+                @if (!string.IsNullOrEmpty(respuesta.Foto))
+                {
+                    <img src="@respuesta.Foto" alt="Imagen de la respuesta" style="max-width: 100px; height: auto;" />
+                }
+            </label>
+        </div>
+    }
+    <button type="submit" class="btn btn-success mt-3">Responder</button>
+</form>

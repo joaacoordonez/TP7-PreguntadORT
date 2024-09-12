@@ -1,3 +1,41 @@
 @{
     ViewData["Title"] = "ConfigurarJuego";
 }
+
+<h2>Configura tu Juego</h2>
+
+<form asp-action="Comenzar" method="get">
+
+    <div class="form-group">
+        <label for="dificultad">Dificultad:</label>
+        <select id="dificultad" name="dificultad" class="form-control" required>
+            <option value="-1">Todas las Dificultades</option>
+            @foreach (TP7_PreguntadORT.Models.Dificultad dificultad in ViewBag.Dificultades)
+            {
+                <option value="@dificultad.IdDificultad">@dificultad.Nombre</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="categoria">Categoría:</label>
+        <select id="categoria" name="categoria" class="form-control" required>
+            <option value="-1">Todas las Categorías</option>
+            @foreach (TP7_PreguntadORT.Models.Categoria categoria in ViewBag.Categorias)
+            {
+                <option value="@categoria.IdCategoria"> @categoria.Nombre</option>
+            }
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="username">Usuario:</label>
+        <input type="text" id="username" name="username" class="form-control" required />
+    </div>
+    <p>
+    <a href='@Url.Action("Comenzar", "Home")'>
+        <button type="button" class="btn btn-warning">Jugar</button>
+    </a>
+    </p>
+
+
+</form>

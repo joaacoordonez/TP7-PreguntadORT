@@ -2,9 +2,12 @@
     ViewData["Title"] = "Index";
 }
 
-
-
 <div>
     <img src="~/images/Logo.jpg" alt="Logo Trivia">
-    <button type="button" class="btn btn-warning">Configurar Juego</button>
+    <p>
+    <a href='@Url.Action("ConfigurarJuego", "Home")'>
+        <button type="button" class="btn btn-warning">Configurar Juego</button>
+    </a>
+    </p>
 </div>
+
