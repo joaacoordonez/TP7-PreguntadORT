@@ -26,24 +26,38 @@ public static class BD
         }
         return ListaDificultades;
     }
-    public static List<Pregunta> ObtenerPreguntas(int dificultad, int categoria)
+    public static List<Pregunta> ObtenerPreguntas(int idDificultad, int idCategoria)
+{
+    List<Pregunta> ListaPreguntas = new List<Pregunta>();
+
+    using (SqlConnection db = new SqlConnection(_connectionString))
     {
-        List<Pregunta> ListaPreguntas = new List<Pregunta>();
-        using(SqlConnection db = new SqlConnection(_connectionString))
+        string sql = "SELECT * FROM Preguntas WHERE 1=1";
+        
+        if (idDificultad != -1 && idCategoria != -1)
         {
-            string sql = "SELECT * FROM Preguntas WHERE 1=1";
-            if (dificultad != -1)
-            {
-                sql += " AND IdDificultad = @Dificultad";
-            }
-            if (categoria != -1)
-            {
-                sql += " AND IdCategoria = @Categoria";
-            }
-            ListaPreguntas = db.Query<Pregunta>(sql, new { IdDificultad = dificultad, IdCategoria = categoria }).ToList();
+            sql += " AND IdCategoria = @pIdCategoria AND IdDificultad = @pIdDificultad";
+            ListaPreguntas = db.Query<Pregunta>(sql, new { pIdCategoria = idCategoria, pIdDificultad = idDificultad }).ToList();
         }
-        return ListaPreguntas;
+        else if (idDificultad == -1 && idCategoria != -1)
+        {
+            sql += " AND IdCategoria = @pIdCategoria";
+            ListaPreguntas = db.Query<Pregunta>(sql, new { pIdCategoria = idCategoria }).ToList();
+        }
+        else if (idDificultad != -1 && idCategoria == -1)
+        {
+            sql += " AND IdDificultad = @pIdDificultad";
+            ListaPreguntas = db.Query<Pregunta>(sql, new { pIdDificultad = idDificultad }).ToList();
+        }
+        else
+        {
+            ListaPreguntas = db.Query<Pregunta>(sql).ToList();
+        }
     }
+    
+    return ListaPreguntas;
+}
+
     public static List<Respuesta> ObtenerRespuestas(int idPregunta)
     {
         List<Respuesta> ListaRespuestas = new List<Respuesta>();
@@ -59,7 +73,7 @@ public static class BD
         bool esCorrecta = false;
         using(SqlConnection db = new SqlConnection(_connectionString))
         {
-            string sql = "SELECT Correcta FROM Respuestas WHERE IdRespuesta = @idRespuesta";
+            string sql = "SELECT Correcta FROM Respuestas WHERE IdRespuestas = @idRespuesta";
             esCorrecta = db.QueryFirstOrDefault<bool>(sql, new { IdRespuesta = idRespuesta });
         }
         return esCorrecta;

@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Respuesta";
+}
+
+<div class="resultado">
+    <h2 class="resultado-titulo">
+        @(ViewBag.EsCorrecta ? "¡Correcto!" : "Incorrecto!")
+    </h2>
+
+
+    <div class="resultado-mensaje @(ViewBag.EsCorrecta != null && (bool)ViewBag.EsCorrecta ? "correcto" : "incorrecto")">
+        @(ViewBag.EsCorrecta != null && (bool)ViewBag.EsCorrecta ? "¡Correcto!" : "Incorrecto!")
+    </div>
+
+    @if (ViewBag.EsCorrecta != null && !(bool)ViewBag.EsCorrecta)
+    {
+        <div class="respuesta-correcta">
+            <h3>La respuesta correcta era:</h3>
+            <div>
+                @if (ViewBag.Respuestas != null)
+                {
+                    @foreach (Respuesta respuesta in (System.Collections.Generic.List<TP7_PreguntadORT.Models.Respuesta>)ViewBag.Respuestas)
+                    {
+                        if (respuesta.Correcta)
+                        {
+                            <p>@respuesta.Contenido</p>
+                            @if (!string.IsNullOrEmpty(respuesta.Foto))
+                            {
+                                <img src="@respuesta.Foto" alt="Foto de la respuesta correcta" class="respuesta-foto" />
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    <p>No se pudo determinar la respuesta correcta.</p>
+                }
+            </div>
+        </div>
+    }
+
+
+    <div>
+        <a href='@Url.Action("Jugar", "Home")' class="btn btn-primary">Jugar la siguiente pregunta</a>
+    </div>
+</div>
+

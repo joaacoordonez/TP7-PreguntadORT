@@ -1,0 +1,38 @@
+@{
+    ViewData["Title"] = "Juego";
+}
+
+<h2>Juego</h2>
+
+<div>
+    <h3>Usuario: @ViewBag.Username</h3>
+    <p>Puntaje Actual: @ViewBag.Puntaje</p>
+</div>
+
+<div>
+    <h4>Pregunta @ViewBag.NumeroPregunta</h4>
+    <p>@ViewBag.Pregunta.Enunciado</p>
+    @if (!string.IsNullOrEmpty(ViewBag.Pregunta.Foto))
+    {
+        <img src="@ViewBag.Pregunta.Foto" alt="Foto de la pregunta" style="max-width: 300px; max-height: 200px;" />
+    }
+</div>
+
+<form method="post" action='@Url.Action("VerificarRespuesta", "Home")'>
+    @foreach (var respuesta in ViewBag.Respuestas)
+    {
+        <div>
+            <input type="radio" id="respuesta_@respuesta.IdRespuesta" name="idRespuesta" value="@respuesta.IdRespuesta" required />
+            <label for="respuesta_@respuesta.IdRespuesta">
+                @respuesta.Contenido
+                @if (!string.IsNullOrEmpty(respuesta.Foto))
+                {
+                    <img src="@respuesta.Foto" alt="Foto de la respuesta" style="max-width: 100px; max-height: 100px;" />
+                }
+            </label>
+        </div>
+    }
+    <input type="hidden" name="idPregunta" value="@ViewBag.Pregunta.IdPregunta" />
+    <button type="submit">Enviar Respuesta</button>
+</form>
+

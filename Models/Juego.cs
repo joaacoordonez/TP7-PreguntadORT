@@ -35,7 +35,7 @@ public static class Juego
     {
         InicializarJuego();
         Juego.username = username;
-        List<Pregunta> ListaPreguntas = BD.ObtenerPreguntas(dificultad, categoria);
+        ListaPreguntas = BD.ObtenerPreguntas(dificultad, categoria);
     }
     public static Pregunta ObtenerProximaPregunta()
     {
